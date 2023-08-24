@@ -2,7 +2,8 @@ import './style.css'
 import {BFS, inarray,makeind,makeid,makecrds,maketipn,maketip,findchilds,buildpath} from './bfs'
 import {dbCartaSvg} from './dbcartasvg'
 import {MSTS,MLNS,MLBS,MLGN} from './mosmetro'
-import {} from './ui'
+import {updatePopup} from './ui'
+import {frontToBack} from "./utils";
 
 export const loading = {
     stations: Object.fromEntries(MSTS.map((station) => [station[3], Math.random()])),
@@ -11,7 +12,7 @@ function getFromWhiteToRed(value) {
     const lightness = 100 - value * 100
     return `hsl(${lightness}, 100%, 50%)`
 }
-function increaseLightness(hex, amount=100) {
+function increaseLightness(hex, amount=150) {
     // Remove the '#' symbol if present
     hex = hex.replace('#', '');
 
@@ -34,6 +35,7 @@ function increaseLightness(hex, amount=100) {
         )
         .join('');
 
+    // return '#BBBBBB';
     return `#${newHex}`;
 }
 var mopt = {};
@@ -52,15 +54,18 @@ function find(str){
     return [].slice.call(DC.root.querySelectorAll(str));
 }
 export function draw() {
-    function route(o)    { return DC.extend({class: 'route', bg: 'none', join: 'round', cap: 'round', width: 7, anchor: ['start', 'middle']}, o||{}); };
+    function route(o)    {
+        return DC.extend({class: 'route', bg: 'none', join: 'round', cap: 'round', width: 7, anchor: ['start', 'middle']}, o||{});
+    };
+    function line(o)    { return DC.extend({class: 'route', bg: 'none', join: 'round', cap: 'round', width: 2, anchor: ['start', 'middle']}, o||{}); };
     function route_ext(o){ return route(DC.extend({width: 3, cap: 'butt', dash: [6,4]}, o||{})); };
     function river(o)    { return route(DC.extend({fg: '#daebf4', cap: 'round', labelcolor: '#5555ff'}, o||{})); };
     function rail(o)     { return route(DC.extend({fg: '#ccc', width: 2}, o||{})); };
     function rail_d(o)   { return rail(DC.extend({fg: '#eee', dash: [8,7]}, o||{})); };
     function label(o)    { return DC.extend({class: 'label', labelcolor: '#aaa', anchor: ['start', 'top']}, o||{}); };
     function station(o)  { return DC.extend({class: 'station', bg: '#f5f5dc', size: 4, width: 1}, o||{}); };
-    function st_mck(o)   { return station(DC.extend({size: 3, labelcolor: 'gray', bg: o['fg']}, o)); };
-    function st_mcd(o)   { return station(DC.extend({size: 5, labelcolor: 'gray', bg: o['fg']}, o)); };
+    function st_mck(o)   { return station(DC.extend({size: 3, labelcolor: 'gray', bg: '#aaa'}, o)); };
+    function st_mcd(o)   { return station(DC.extend({size: 8, labelcolor: 'gray', bg: '#aaa'}, o)); };
     function inch(o)     { return route(DC.extend({fg: '#ccc', cap: 'round', width: 11}, o||{})); };
     function inch_d(o)   { return inch(DC.extend({fg: '#fff', width: 7}, o||{})); };
     function inch_ext(o) { return inch(DC.extend({fg: '#eee', dash:[3,3], width: 2}, o||{})); };
@@ -134,6 +139,7 @@ export function draw() {
         dme_t:     label(    {anchor: ['start', 'middle']}),
         dme_d_t:   label(    {anchor: ['middle','top']})
     });
+
     // stations
     DC.extend(mopt, {
         s1:        station( {fg: mopt['r1'].fg,    anchor: ['start', 'middle']}),
@@ -278,6 +284,15 @@ export function draw() {
             'stroke-linecap': mopt[ftype].cap,
             'stroke-width': mds(mopt[ftype].width)
         });
+        const center = DC.append('path', {
+            id: ftype + '_' + abbr, d: path,
+            class: mopt[ftype].class, mclass: ftype,
+            fill: mopt[ftype].bg, stroke: '#00000033',
+            'stroke-dasharray': mopt[ftype].dash,
+            'stroke-linejoin': mopt[ftype].join,
+            'stroke-linecap': mopt[ftype].cap,
+            'stroke-width': 2
+        })
         // interchange double line
         if(mopt[ftype +'_d']){
             DC.append('path', {
@@ -305,6 +320,7 @@ export function draw() {
                         }
                     }
                 }
+
                 DC.doMap(lns, lnsattr);
             }
         });
@@ -313,11 +329,15 @@ export function draw() {
     MSTS.map(function(station){
         var ftype = station[0], abbr = station[1], coords = station[2][0], label = station[3],
             pts = DC.toPoints(coords, true);
+        if(!loading.stations?.[frontToBack?.[label]] && !loading.stations?.[label]) {
+            console.log('Station not found: ' + label);
+        }
         var station = DC.append('circle', {
             id: ftype +'_'+ abbr, class: mopt[ftype].class, mclass: ftype,
-            fill: getFromWhiteToRed(loading.stations[label] || 0.5), stroke: '#FFFFFF', 'stroke-width': mds(mopt[ftype].width),
-            cx: pts[0], cy: pts[1], r: mds(mopt[ftype].size)
+            fill: getFromWhiteToRed(loading.stations?.[frontToBack?.[label]] || loading.stations?.[label] || 0.5), stroke: '#000000', 'stroke-width': 1,
+            cx: pts[0], cy: pts[1], r: 8 || mds(mopt[ftype].size)
         });
+
         DC.extend(station, {
             onmousemove: function(){
                 // find text by id
@@ -329,6 +349,10 @@ export function draw() {
                 }
                 // highlight station(ev) + label
                 DC.doMap([{target: this}].concat(ts), [{r: mds(8)}].concat(tsattr));
+                const station = label
+                const load = loading.stations?.[frontToBack?.[label]] || loading.stations?.[label] || 0.5
+                updatePopup({fill: load, station})
+
             }
         });
         if(!label) return;
@@ -344,7 +368,7 @@ export function draw() {
         };
         var text = DC.append('text', {
             id: 't'+ ftype +'_'+ abbr, class: mopt[ftype].class,
-            x: pts[0] + mds(dx), y: pts[1] + mds(dy), fill: mopt[ftype].labelcolor || 'black',
+            x: pts[0] + mds(dx), y: pts[1] + mds(dy), fill: '#333333' || 'black',
             'font-family': 'sans-serif', 'font-size': DC.root.getAttribute('width')/125,
             'text-anchor': a ? a[0] : '', cursor: 'pointer'
         });

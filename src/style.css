@@ -1,3 +1,6 @@
+*{
+    font-family: "Roboto Light", sans-serif;
+}
 input[type="date"] {
     width: 200px;
     height: 40px;
@@ -21,13 +24,13 @@ input[type='time']:focus{
     box-shadow: 0 0 0 0.2rem rgba(102, 175, 233, 0.25);
 }
 button{
-    width: 100px;
-    height: 40px;
+    padding: 10px;
     border: 2px solid #ccc;
     border-radius: 4px;
     background-color: #4CAF50;
     color: white;
     margin: 10px;
+    font-size: 20px;
 }
 button:hover{
     background-color: #45a049;
@@ -35,4 +38,28 @@ button:hover{
 input{
     display: block;
     margin: 10px;
+    padding-left: 10px;
+    font-size: 20px;
+}
+
+.loader-container {
+    width: 200px;
+    height: 20px;
+    background-color: #e8e8e8;
+    overflow: hidden;
+}
+
+.loader {
+    position: absolute;
+    height: 20px;
+    background-color: #d7f7ff;
+}
+
+#popup{
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    background-color: #e8e8e8;
+    padding: 10px;
+    border-radius: 4px;
 }

@@ -5,9 +5,20 @@ const timeEl = document.getElementById("time");
 const submitBtn = document.getElementById("submit");
 const formEl = document.getElementById("form");
 import {draw, loading} from "./index.js";
-// send when the submit button is clicked
 
-
+const popup = document.getElementById("popup");
+export function updatePopup({fill, station}) {
+    popup.innerHTML = `
+        <div class="loader-container">
+            <h3 style="position: absolute">${station}</h3>
+            <div style="position: relative; top 100px">
+                <div class="loader" style="width: ${Math.round(fill*100)}%"></div>
+                <p style="position: absolute; margin: 0!important; text-align: center; width: 100%">заполнено на ${Math.round(fill*100)}%</p>
+            </div>
+        </div>
+    `
+}
+updatePopup({fill: 0.5, station: "Китай-город"})
 submitBtn.addEventListener("click", async (e) => {
     try {
         e.preventDefault()
@@ -16,17 +27,17 @@ submitBtn.addEventListener("click", async (e) => {
         const datetime = `${date} ${time}`;
         console.log(JSON.stringify({datetime}));
 
-        const response = await fetch("http://back.nightmirror.ru:25518/predict/all", {
+        const response = await fetch("/api", {
             method: "POST",
             headers: {
-                "Content-Type": "application/json"
+                "Access-Control-Allow-Origin": "*",
+                'Content-Type': 'application/json',
             },
             body: JSON.stringify({datetime})
-        });
-
+        })
         if (response.ok) {
             loading.stations = await response.json();
-            console.log(loading.stations);
+            loading.stations = loading.stations.stations
             draw();
         } else {
             console.error("Server returned an error:", await response.text());

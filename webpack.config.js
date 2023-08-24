@@ -50,12 +50,13 @@ module.exports = {
     // DevServer configuration
     devServer: {
         port: 9000,
-        proxy:{
-            '/api':{
-                target: 'http://back.nightmirror.ru:25518',
-            }
-        }
+        proxy: {
+            '/api': {
+                target: 'http://back.nightmirror.ru:25518/predict/all',
+                pathRewrite: { '^/api': '' },
+                changeOrigin: true,
+            },
+        },
     },
 
-    // Additional configurations if needed
 };

@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Схема метро Москвы с расчетом пути в 2023 году / SVG векторная карта</title>
+    <title>Нагруженность метро</title>
     <meta name="description" content="Схема метро Москвы c расчётом пути. Схема действующих и строящихся линий и станций московского метро в 2023 году. Скачать векторную карту метро Москвы в SVG. ">
     <meta name="keywords" content="схема метро москвы, скачать svg векторную карту метро, мцк, мцд, mosmetro">
     <link rel="icon" href="../img/fav.svg" type="image/svg+xml">
@@ -12,9 +12,12 @@
 </head>
 <body>
 <div style="position: absolute" id="form">
-    <input type="date" id="date" value="2023-01-01" />
-    <input type="time" id="time" value="12:00"/>
+    <input type="date" id="date" />
+    <input type="time" id="time"/>
     <button id="submit">Предсказать</button>
+</div>
+<div id="popup">
+
 </div>
 
 <table>
@@ -27,4 +30,14 @@
 
 </body>
 <script src="index.js"></script>
+<script>
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+    const hour = String(today.getHours()).padStart(2, '0');
+    const formattedDate = `${year}-${month}-${day}`;
+    document.getElementById('date').value = formattedDate;
+    document.getElementById('time').value = `${hour}:00`;
+</script>
 </html>
