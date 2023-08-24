@@ -1,0 +1,38 @@
+input[type="date"] {
+    width: 200px;
+    height: 40px;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+}
+input[type="date"]:focus {
+    border-color: #66afe9;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(102, 175, 233, 0.25);
+}
+input[type='time']{
+    width: 200px;
+    height: 40px;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+}
+input[type='time']:focus{
+    border-color: #66afe9;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(102, 175, 233, 0.25);
+}
+button{
+    width: 100px;
+    height: 40px;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    background-color: #4CAF50;
+    color: white;
+    margin: 10px;
+}
+button:hover{
+    background-color: #45a049;
+}
+input{
+    display: block;
+    margin: 10px;
+}

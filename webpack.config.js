@@ -3,7 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
     // Entry point for your application
-    entry: './index.js',
+    entry: './src/index.js',
 
     // Output configuration
     output: {
@@ -14,10 +14,9 @@ module.exports = {
 
     // Loaders and rules
     resolve: {
-        extensions: ['.js', '.json', '.ts'],
+        extensions: ['.js', '.json', '.ts', '.css'],
     },
     // Source map for easier debugging
-    devtool: 'inline-source-map',
     module: {
         rules: [
             {
@@ -44,15 +43,18 @@ module.exports = {
     // Plugins
     plugins: [
         new HtmlWebpackPlugin({
-            template: './mosmetro.html'
+            template: './src/mosmetro.html'
         })
     ],
 
     // DevServer configuration
     devServer: {
-        compress: true,
         port: 9000,
-        historyApiFallback: true, // If using client-side routing
+        proxy:{
+            '/api':{
+                target: 'http://back.nightmirror.ru:25518',
+            }
+        }
     },
 
     // Additional configurations if needed

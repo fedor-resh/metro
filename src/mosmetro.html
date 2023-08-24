@@ -1,10 +1,6 @@
-<!DOCTYPE html>
-<!--
-Moscow Metro map. SVG version.
-View lines, stations and calc routes.
-egax@bk.ru, 2015-23.
--->
-<html lang="ru">
+<!doctype html>
+
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,10 +8,15 @@ egax@bk.ru, 2015-23.
     <meta name="description" content="Схема метро Москвы c расчётом пути. Схема действующих и строящихся линий и станций московского метро в 2023 году. Скачать векторную карту метро Москвы в SVG. ">
     <meta name="keywords" content="схема метро москвы, скачать svg векторную карту метро, мцк, мцд, mosmetro">
     <link rel="icon" href="../img/fav.svg" type="image/svg+xml">
-    <link rel="canonical" href="mosmetro.html">
     <style>html,body,table,svg{overflow:hidden;border-collapse:collapse;margin:0;padding:0;width:100%;height:100%}</style>
 </head>
 <body>
+<div style="position: absolute" id="form">
+    <input type="date" id="date" value="2023-01-01" />
+    <input type="time" id="time" value="12:00"/>
+    <button id="submit">Предсказать</button>
+</div>
+
 <table>
     <tr>
         <td colspan="5" id="mcont" valign="bottom">
@@ -23,9 +24,7 @@ egax@bk.ru, 2015-23.
         </td>
     </tr>
 </table>
-<!--<script src="./dbcartasvg.js"></script>-->
-<!--<script src="./mosmetro.js"></script>-->
-<!--<script src="./bfs.js"></script>-->
-<script src="index.js"></script>
+
 </body>
+<script src="index.js"></script>
 </html>
