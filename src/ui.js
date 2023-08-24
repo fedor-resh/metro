@@ -27,7 +27,7 @@ submitBtn.addEventListener("click", async (e) => {
         const datetime = `${date} ${time}`;
         console.log(JSON.stringify({datetime}));
 
-        const response = await fetch("/api", {
+        const response = await fetch("/api/predict/all", {
             method: "POST",
             headers: {
                 "Access-Control-Allow-Origin": "*",

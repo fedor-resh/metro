@@ -25,5 +25,5 @@
     "style-loader": "^3.3.3",
     "webpack-dev-server": "^4.15.1"
   },
-  "proxy": "http://back.nightmirror.ru:25518/predict/all"
+  "proxy": "http://back.nightmirror.ru:25518"
 }

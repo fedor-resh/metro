@@ -52,7 +52,7 @@ module.exports = {
         port: 9000,
         proxy: {
             '/api': {
-                target: 'http://back.nightmirror.ru:25518/predict/all',
+                target: 'http://back.nightmirror.ru:25518/',
                 pathRewrite: { '^/api': '' },
                 changeOrigin: true,
             },
