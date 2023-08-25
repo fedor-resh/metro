@@ -4,21 +4,28 @@ const dateEl = document.getElementById("date");
 const timeEl = document.getElementById("time");
 const submitBtn = document.getElementById("submit");
 const formEl = document.getElementById("form");
-import {draw, loading} from "./index.js";
+import {draw, getFromWhiteToRed, loading} from "./index.js";
 
 const popup = document.getElementById("popup");
-export function updatePopup({fill, station}) {
+export function updatePopup({fill, station, e}) {
+    if(!station) {
+        popup.style.display = "none";
+        return
+    }else{
+        popup.style.display = "block";
+    }
+    popup.style.left = `${e.clientX}px`;
+    popup.style.top = `${e.clientY}px`;
+    // console.log(e)
     popup.innerHTML = `
+        <h3 style="margin:0 10px 10px 10px; text-align: center">${station}</h3>
         <div class="loader-container">
-            <h3 style="position: absolute">${station}</h3>
-            <div style="position: relative; top 100px">
-                <div class="loader" style="width: ${Math.round(fill*100)}%"></div>
-                <p style="position: absolute; margin: 0!important; text-align: center; width: 100%">заполнено на ${Math.round(fill*100)}%</p>
-            </div>
+            <div class="loader" style="width: ${Math.round(fill * 100)}%; background-color: ${getFromWhiteToRed(fill)}"></div>
+            <p style="position: absolute; margin: 2px; text-align: center; width: 100%">Нагруженность ${Math.round(fill * 100)}%</p>
         </div>
     `
+
 }
-updatePopup({fill: 0.5, station: "Китай-город"})
 submitBtn.addEventListener("click", async (e) => {
     try {
         e.preventDefault()

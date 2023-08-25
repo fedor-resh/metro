@@ -55,6 +55,7 @@ module.exports = {
                 target: 'http://back.nightmirror.ru:25518/',
                 pathRewrite: { '^/api': '' },
                 changeOrigin: true,
+                secure: false, // Set this to 'true' if your target server supports HTTPS
             },
         },
     },

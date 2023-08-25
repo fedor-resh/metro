@@ -1,5 +1,6 @@
 *{
     font-family: "Roboto Light", sans-serif;
+    box-sizing: border-box;
 }
 input[type="date"] {
     width: 200px;
@@ -43,23 +44,29 @@ input{
 }
 
 .loader-container {
-    width: 200px;
-    height: 20px;
+    position: relative;
+    height: 25px;
     background-color: #e8e8e8;
     overflow: hidden;
+    border: 2px solid #dedede;
+    border-radius: 4px;
 }
 
 .loader {
     position: absolute;
-    height: 20px;
-    background-color: #d7f7ff;
+    height: 25px;
+    background-color: #ff6767;
 }
 
 #popup{
+    display: none;
+    width: 200px;
+    pointer-events: none;
     position: absolute;
     right: 10px;
     top: 10px;
-    background-color: #e8e8e8;
+    background-color: #fff3f3;
     padding: 10px;
     border-radius: 4px;
+    box-shadow: #1f254188 0px 5px 20px;
 }

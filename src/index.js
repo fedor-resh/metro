@@ -8,7 +8,7 @@ import {frontToBack} from "./utils";
 export const loading = {
     stations: Object.fromEntries(MSTS.map((station) => [station[3], Math.random()])),
 }
-function getFromWhiteToRed(value) {
+export function getFromWhiteToRed(value) {
     const lightness = 100 - value * 100
     return `hsl(${lightness}, 100%, 50%)`
 }
@@ -78,35 +78,35 @@ export function draw() {
     function inst_d(o)   { return inst(DC.extend({size: 3, width: 2}, o||{})); };
     // lines
     DC.extend(mopt, {
-        r1:        route(    {fg: increaseLightness('#ed1b35')}),
-        r1_ext:    route_ext({fg: increaseLightness('#ed1b35')}),
-        r2:        route(    {fg: increaseLightness('#44b85c')}),
-        r2_ext:    route_ext({fg: increaseLightness('#44b85c')}),
-        r3:        route(    {fg: increaseLightness('#0078bf')}),
-        r3_ext:    route_ext({fg: increaseLightness('#0078bf')}),
-        r4:        route(    {fg: increaseLightness('#19c1f3')}),
-        r4A:       route(    {fg: increaseLightness('#19c1f3')}),
-        r5:        route(    {fg: increaseLightness('#894e35')}),
-        r6:        route(    {fg: increaseLightness('#f58631')}),
-        r6_ext:    route_ext({fg: increaseLightness('#f58631')}),
-        r7:        route(    {fg: increaseLightness('#8e479c')}),
-        r7_ext:    route_ext({fg: increaseLightness('#8e479c')}),
-        r8:        route(    {fg: increaseLightness('#ffcb31')}),
-        r8_ext:    route_ext({fg: increaseLightness('#ffcb31')}),
-        r9:        route(    {fg: increaseLightness('#a1a2a3')}),
-        r10:       route(    {fg: increaseLightness('#b3d445')}),
-        r10_ext:   route_ext({fg: increaseLightness('#b3d445')}),
-        r11:       route(    {fg: increaseLightness('#79cdcd')}),
-        r11_ext:   route_ext({fg: increaseLightness('#79cdcd')}),
-        r11A:      route(    {fg: increaseLightness('#79cdcd')}),
-        r12:       route(    {fg: increaseLightness('#acbfe1')}),
-        r12_ext:   route_ext({fg: increaseLightness('#acbfe1')}),
-        r13:       route(    {fg: increaseLightness('#2c87c5'), width: 2}),
-        r14:       rail(     {fg: increaseLightness('#f76093'), width: 2}),
+        r1:        route(    {fg: '#ed1b35'}),
+        r1_ext:    route_ext({fg: '#ed1b35'}),
+        r2:        route(    {fg: '#44b85c'}),
+        r2_ext:    route_ext({fg: '#44b85c'}),
+        r3:        route(    {fg: '#0078bf'}),
+        r3_ext:    route_ext({fg: '#0078bf'}),
+        r4:        route(    {fg: '#19c1f3'}),
+        r4A:       route(    {fg: '#19c1f3'}),
+        r5:        route(    {fg: '#894e35'}),
+        r6:        route(    {fg: '#f58631'}),
+        r6_ext:    route_ext({fg: '#f58631'}),
+        r7:        route(    {fg: '#8e479c'}),
+        r7_ext:    route_ext({fg: '#8e479c'}),
+        r8:        route(    {fg: '#ffcb31'}),
+        r8_ext:    route_ext({fg: '#ffcb31'}),
+        r9:        route(    {fg: '#a1a2a3'}),
+        r10:       route(    {fg: '#b3d445'}),
+        r10_ext:   route_ext({fg: '#b3d445'}),
+        r11:       route(    {fg: '#79cdcd'}),
+        r11_ext:   route_ext({fg: '#79cdcd'}),
+        r11A:      route(    {fg: '#79cdcd'}),
+        r12:       route(    {fg: '#acbfe1'}),
+        r12_ext:   route_ext({fg: '#acbfe1'}),
+        r13:       route(    {fg: '#2c87c5', width: 2}),
+        r14:       rail(     {fg: '#f76093', width: 2}),
         r14_d:     rail_d(   {width:2}),
-        r15:       route(    {fg: increaseLightness('#de62be')}),
-        r16:       route(    {fg: increaseLightness('#554d26')}),
-        r16_ext:   route_ext({fg: increaseLightness('#554d26')}),
+        r15:       route(    {fg: '#de62be'}),
+        r16:       route(    {fg: '#554d26'}),
+        r16_ext:   route_ext({fg: '#554d26'}),
         inch:      inch(),
         inch_d:    inch_d(),
         inch_ext:  inch_ext(),
@@ -278,7 +278,7 @@ export function draw() {
         var route = DC.append('path', {
             id: ftype + '_' + abbr, d: path,
             class: mopt[ftype].class, mclass: ftype,
-            fill: mopt[ftype].bg, stroke: mopt[ftype].fg,
+            fill: mopt[ftype].bg, stroke: increaseLightness(mopt[ftype].fg),
             'stroke-dasharray': mopt[ftype].dash,
             'stroke-linejoin': mopt[ftype].join,
             'stroke-linecap': mopt[ftype].cap,
@@ -316,7 +316,8 @@ export function draw() {
                         var line = document.getElementById('r'+rtype+pref[i]+'_'+'r'+rtype+suf[ii]);
                         if(line){ // highlight line
                             lns.push( {target: line} );
-                            lnsattr.push( {'stroke-width': mds(12)} );
+                            lnsattr.push( {'stroke-width': mds(12)});
+                            // lnsattr.push( {'stroke-width': mds(12), 'stroke': mopt['r'+rtype+pref[i]].bg});
                         }
                     }
                 }
@@ -339,7 +340,10 @@ export function draw() {
         });
 
         DC.extend(station, {
-            onmousemove: function(){
+            onmouseleave: function(e){
+                updatePopup({})
+            },
+            onmousemove: function(e){
                 // find text by id
                 var text = document.getElementById('t'+this.getAttribute('id'));
                 var ts = [], tsattr =[];
@@ -348,11 +352,11 @@ export function draw() {
                     tsattr.push( {'font-size': DC.root.getAttribute('width')/80} );
                 }
                 // highlight station(ev) + label
-                DC.doMap([{target: this}].concat(ts), [{r: mds(8)}].concat(tsattr));
+                DC.doMap([{target: this}].concat(ts), [{r: 10}].concat(tsattr));
                 const station = label
                 const load = loading.stations?.[frontToBack?.[label]] || loading.stations?.[label] || 0.5
-                updatePopup({fill: load, station})
-
+                console.log(mopt[this.getAttribute('mclass').split('_')[0]].bg)
+                updatePopup({fill: load, station, e})
             }
         });
         if(!label) return;
@@ -420,7 +424,7 @@ function clearRoute(){
     find('.selpath').map(function(o){ DC.vp.removeChild(o); });
     find('.selected').map(function(o){
         var m = o.getAttribute('mclass');
-        DC.attr(o, {class: mopt[m].class, fill: mopt[m].bg, r: mds(mopt[m].size), 'stroke-width': mds(mopt[m].width)});
+        DC.attr(o, {class: mopt[m].class, fill: mopt[m].bg, r: 8, 'stroke-width': mds(mopt[m].width)});
     });
     find('.route, .station, .label').map(function(o){ DC.attr(o, {opacity: '1'}); });
 }

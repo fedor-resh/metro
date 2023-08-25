@@ -4,6 +4,8 @@
 // https://github.com/egaxegax/dbcartajs.git
 // egax@bk.ru, 2015. b230522.
 //
+import {updatePopup} from "./ui";
+
 export function dbCartaSvg(cfg) {
     var SVG_NS = 'http://www.w3.org/2000/svg',
         self = this;
@@ -593,6 +595,8 @@ export function dbCartaSvg(cfg) {
         },
         // - handlers -----------------------------
         mousemove: function(ev) {
+            // updatePopup({})
+
             var spts = self.canvasXY(ev),
                 pts = self.rotatePts(spts, self.m.rotate, self.centerOf());
             if (self.m.mpts && self.cfg.draggable && !self.isTurnable()) {
