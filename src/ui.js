@@ -45,9 +45,9 @@ export function updatePopup({fill, station, e}) {
 
 }
 const loader = new LoaderButton(submitBtn)
-submitBtn.addEventListener("click", async (e) => {
+export const request = async (e) => {
     try {
-        e.preventDefault()
+        if(e) e.preventDefault()
         const date = dateEl.value;
         const time = timeEl.value;
         const datetime = `${date} ${time}`;
@@ -73,5 +73,7 @@ submitBtn.addEventListener("click", async (e) => {
     } catch (error) {
         console.error("An error occurred:", error);
     }
-});
+}
+request()
+submitBtn.addEventListener("click", request);
 
