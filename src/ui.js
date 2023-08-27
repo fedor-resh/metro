@@ -5,7 +5,25 @@ const timeEl = document.getElementById("time");
 const submitBtn = document.getElementById("submit");
 const formEl = document.getElementById("form");
 import {draw, getFromWhiteToRed, loading} from "./index.js";
+class LoaderButton {
+    constructor(button) {
+        this.button = button
+        this.buttonText = this.button.querySelector(".button-text");
+        this.loader = this.button.querySelector(".loader");
+    }
 
+    startLoader() {
+        this.button.disabled = true;
+        this.buttonText.style.display = "none";
+        this.loader.style.display = "inline-block";
+    }
+
+    endLoader() {
+        this.button.disabled = false;
+        this.buttonText.style.display = "inline";
+        this.loader.style.display = "none";
+    }
+}
 const popup = document.getElementById("popup");
 export function updatePopup({fill, station, e}) {
     if(!station) {
@@ -19,13 +37,14 @@ export function updatePopup({fill, station, e}) {
     // console.log(e)
     popup.innerHTML = `
         <h3 style="margin:0 10px 10px 10px; text-align: center">${station}</h3>
-        <div class="loader-container">
-            <div class="loader" style="width: ${Math.round(fill * 100)}%; background-color: ${getFromWhiteToRed(fill)}"></div>
+        <div class="filler-container">
+            <div class="filler" style="width: ${Math.round(fill * 100)}%; background-color: ${getFromWhiteToRed(fill)}"></div>
             <p style="position: absolute; margin: 2px; text-align: center; width: 100%">Нагруженность ${Math.round(fill * 100)}%</p>
         </div>
     `
 
 }
+const loader = new LoaderButton(submitBtn)
 submitBtn.addEventListener("click", async (e) => {
     try {
         e.preventDefault()
@@ -33,7 +52,7 @@ submitBtn.addEventListener("click", async (e) => {
         const time = timeEl.value;
         const datetime = `${date} ${time}`;
         console.log(JSON.stringify({datetime}));
-
+        loader.startLoader()
         const response = await fetch("https://metroflask.fedor-resh.repl.co/", {
             method: "POST",
             headers: {
@@ -42,6 +61,7 @@ submitBtn.addEventListener("click", async (e) => {
             },
             body: JSON.stringify({datetime})
         })
+        loader.endLoader()
         if (response.ok) {
             loading.stations = await response.json();
             loading.stations = loading.stations.stations
