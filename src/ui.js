@@ -34,7 +34,7 @@ submitBtn.addEventListener("click", async (e) => {
         const datetime = `${date} ${time}`;
         console.log(JSON.stringify({datetime}));
 
-        const response = await fetch("/api/predict/all", {
+        const response = await fetch("https://metroflask.fedor-resh.repl.co/", {
             method: "POST",
             headers: {
                 "Access-Control-Allow-Origin": "*",
