@@ -284,15 +284,6 @@ export function draw() {
             'stroke-linecap': mopt[ftype].cap,
             'stroke-width': mds(mopt[ftype].width)
         });
-        const center = DC.append('path', {
-            id: ftype + '_' + abbr, d: path,
-            class: mopt[ftype].class, mclass: ftype,
-            fill: mopt[ftype].bg, stroke: '#00000033',
-            'stroke-dasharray': mopt[ftype].dash,
-            'stroke-linejoin': mopt[ftype].join,
-            'stroke-linecap': mopt[ftype].cap,
-            'stroke-width': 2
-        })
         // interchange double line
         if(mopt[ftype +'_d']){
             DC.append('path', {
@@ -332,6 +323,7 @@ export function draw() {
             pts = DC.toPoints(coords, true);
         if(!loading.stations?.[frontToBack?.[label]] && !loading.stations?.[label]) {
             console.log('Station not found: ' + label);
+            return
         }
         var station = DC.append('circle', {
             id: ftype +'_'+ abbr, class: mopt[ftype].class, mclass: ftype,
