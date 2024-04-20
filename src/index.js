@@ -4,15 +4,23 @@ import {dbCartaSvg} from './dbcartasvg'
 import {MSTS,MLNS,MLBS,MLGN} from './mosmetro'
 import {updatePopup} from './ui'
 import {frontToBack} from "./utils";
-
+const config = {
+    dots: {
+        defaultSize: 6,
+        defaultBorderSize: 3,
+        hoverSize: 10,
+        hoverBorderSize: 5,
+        strokeColor: '#000',
+    }
+}
 export const loading = {
     stations: Object.fromEntries(MSTS.map((station) => [station[3], Math.random()])),
 }
 export function getFromWhiteToRed(value) {
     const lightness = 100 - value * 100
-    return `hsl(${lightness}, 100%, 50%)`
+    return `hsl(${lightness}, 100%, ${40+value*10}%)`
 }
-function increaseLightness(hex, amount=150) {
+function increaseLightness(hex, amount=100) {
     // Remove the '#' symbol if present
     hex = hex.replace('#', '');
 
@@ -31,11 +39,9 @@ function increaseLightness(hex, amount=150) {
         .map((x) => {
             const hex = Math.round(x).toString(16);
             return hex.length === 1 ? '0' + hex : hex;
-        }
-        )
+        })
         .join('');
 
-    // return '#BBBBBB';
     return `#${newHex}`;
 }
 var mopt = {};
@@ -55,10 +61,10 @@ function find(str){
 }
 export function draw() {
     function route(o)    {
-        return DC.extend({class: 'route', bg: 'none', join: 'round', cap: 'round', width: 7, anchor: ['start', 'middle']}, o||{});
+        return DC.extend({class: 'route', bg: 'none', join: 'round', cap: 'round', width: 3, anchor: ['start', 'middle']}, o||{});
     };
     function line(o)    { return DC.extend({class: 'route', bg: 'none', join: 'round', cap: 'round', width: 2, anchor: ['start', 'middle']}, o||{}); };
-    function route_ext(o){ return route(DC.extend({width: 3, cap: 'butt', dash: [6,4]}, o||{})); };
+    function route_ext(o){ return route(DC.extend({width: 1, cap: 'butt', dash: [6,4]}, o||{})); };
     function river(o)    { return route(DC.extend({fg: '#daebf4', cap: 'round', labelcolor: '#5555ff'}, o||{})); };
     function rail(o)     { return route(DC.extend({fg: '#ccc', width: 2}, o||{})); };
     function rail_d(o)   { return rail(DC.extend({fg: '#eee', dash: [8,7]}, o||{})); };
@@ -114,7 +120,7 @@ export function draw() {
         inch_mcd:  inch_mcd(),
         inch_out:  inch_out(),
         mkad:      label(    {fg: 'rgb(210,230,255)', bg: '#fff', anchor: ['middle', 'middle']}),
-        moskvar:   river(    {width: 15}),
+        moskvar:   river(    {width: 5}),
         moskvac:   river(    {width: 5}),
         strogino:  river(    {width: 5}),
         vodootvod: river(    {width: 5}),
@@ -299,21 +305,21 @@ export function draw() {
         DC.extend(route, {
             onmousemove: function(){
                 // find lines by type
-                var rtype = this.getAttribute('mclass').slice(1);
-                var lns = [], lnsattr =[];
-                var pref = ['', '_ext'], suf = ['', '_1', '_2'];
-                for(var i=0; i<pref.length; i++){
-                    for(var ii=0; ii<suf.length; ii++) {
-                        var line = document.getElementById('r'+rtype+pref[i]+'_'+'r'+rtype+suf[ii]);
-                        if(line){ // highlight line
-                            lns.push( {target: line} );
-                            lnsattr.push( {'stroke-width': mds(12)});
-                            // lnsattr.push( {'stroke-width': mds(12), 'stroke': mopt['r'+rtype+pref[i]].bg});
-                        }
-                    }
-                }
-
-                DC.doMap(lns, lnsattr);
+                // var rtype = this.getAttribute('mclass').slice(1);
+                // var lns = [], lnsattr =[];
+                // var pref = ['', '_ext'], suf = ['', '_1', '_2'];
+                // for(var i=0; i<pref.length; i++){
+                //     for(var ii=0; ii<suf.length; ii++) {
+                //         var line = document.getElementById('r'+rtype+pref[i]+'_'+'r'+rtype+suf[ii]);
+                //         if(line){ // highlight line
+                //             lns.push( {target: line} );
+                //             lnsattr.push( {'stroke-width': mds(12)});
+                //             // lnsattr.push( {'stroke-width': mds(12), 'stroke': mopt['r'+rtype+pref[i]].bg});
+                //         }
+                //     }
+                // }
+                //
+                // DC.doMap(lns, lnsattr);
             }
         });
     });
@@ -321,14 +327,10 @@ export function draw() {
     MSTS.map(function(station){
         var ftype = station[0], abbr = station[1], coords = station[2][0], label = station[3],
             pts = DC.toPoints(coords, true);
-        if(!loading.stations?.[frontToBack?.[label]] && !loading.stations?.[label]) {
-            console.log('Station not found: ' + label);
-            return
-        }
         var station = DC.append('circle', {
             id: ftype +'_'+ abbr, class: mopt[ftype].class, mclass: ftype,
-            fill: getFromWhiteToRed(loading.stations?.[frontToBack?.[label]] || loading.stations?.[label] || 0.5), stroke: '#000000', 'stroke-width': 1,
-            cx: pts[0], cy: pts[1], r: 8 || mds(mopt[ftype].size)
+            fill: '#ffffff', stroke: getFromWhiteToRed(loading.stations?.[frontToBack?.[label]] || loading.stations?.[label] || 0.5), 'stroke-width': config.dots.defaultBorderSize,
+            cx: pts[0], cy: pts[1], r: config.dots.defaultSize
         });
 
         DC.extend(station, {
@@ -336,15 +338,10 @@ export function draw() {
                 updatePopup({})
             },
             onmousemove: function(e){
-                // find text by id
-                var text = document.getElementById('t'+this.getAttribute('id'));
+                if(this.getAttribute('id')[0] !== 's') return;
                 var ts = [], tsattr =[];
-                if(text){
-                    ts.push( {target: text} );
-                    tsattr.push( {'font-size': DC.root.getAttribute('width')/80} );
-                }
-                // highlight station(ev) + label
-                DC.doMap([{target: this}].concat(ts), [{r: 10}].concat(tsattr));
+
+                DC.doMap([{target: this}].concat(ts), [{r: config.dots.hoverSize, 'stroke-width': config.dots.hoverBorderSize}].concat(tsattr));
                 const station = label
                 const load = loading.stations?.[frontToBack?.[label]] || loading.stations?.[label] || 0.5
                 console.log(mopt[this.getAttribute('mclass').split('_')[0]].bg)
@@ -377,10 +374,10 @@ export function draw() {
             },
             onmousemove: function(){
                 var ts = [], tsattr =[];
-                ts.push( {target: text} );
-                tsattr.push( {'font-size': DC.root.getAttribute('width')/80} );
+                // ts.push( {target: text} );
+                // tsattr.push( {'font-size': DC.root.getAttribute('width')/80} );
                 // highlight station(ev) + label
-                DC.doMap(ts, tsattr);
+                // DC.doMap(ts, tsattr);
             }
         });
     });

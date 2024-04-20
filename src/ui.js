@@ -26,11 +26,12 @@ class LoaderButton {
 }
 const popup = document.getElementById("popup");
 export function updatePopup({fill, station, e}) {
+
     if(!station) {
-        popup.style.display = "none";
+        popup.style.opacity = '0';
         return
     }else{
-        popup.style.display = "block";
+        popup.style.opacity = '1';
     }
     popup.style.left = `${e.clientX}px`;
     popup.style.top = `${e.clientY}px`;
@@ -39,7 +40,7 @@ export function updatePopup({fill, station, e}) {
         <h3 style="margin:0 10px 10px 10px; text-align: center">${station}</h3>
         <div class="filler-container">
             <div class="filler" style="width: ${Math.round(fill * 100)}%; background-color: ${getFromWhiteToRed(fill)}"></div>
-            <p style="position: absolute; margin: 2px; text-align: center; width: 100%">Нагруженность ${Math.round(fill * 100)}%</p>
+            <p style="position: absolute; margin: 0px; text-align: center; width: 100%">Нагруженность ${Math.round(fill * 100)}%</p>
         </div>
     `
 
