@@ -54,13 +54,13 @@ export const request = async (e) => {
         const datetime = `${date} ${time}`;
         console.log(JSON.stringify({datetime}));
         loader.startLoader()
-        const response = await fetch("https://25fb-149-40-58-147.ngrok-free.app", {
+        const response = await fetch("http://77.91.69.134:8000", {
             method: "POST",
             headers: {
-                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Origin": "http://77.91.69.134:8000",
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({date})
+            body: JSON.stringify({datetime})
         })
         loader.endLoader()
         if (response.ok) {
