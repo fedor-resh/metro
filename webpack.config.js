@@ -49,11 +49,11 @@ module.exports = {
 
     // DevServer configuration
     devServer: {
-        port: 9000,
+        port: 8000,
         proxy: {
-            '/api': {
-                target: 'http://back.nightmirror.ru:25518/',
-                pathRewrite: { '^/api': '' },
+            '/': {
+                target: 'http://77.91.69.134',
+                pathRewrite: { '': '' },
                 changeOrigin: true,
                 secure: false, // Set this to 'true' if your target server supports HTTPS
             },

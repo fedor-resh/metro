@@ -54,10 +54,10 @@ export const request = async (e) => {
         const datetime = `${date} ${time}`;
         console.log(JSON.stringify({datetime}));
         loader.startLoader()
-        const response = await fetch("http://77.91.69.134:8000", {
+        const response = await fetch("https://82201864-cc4c-45d8-80dc-7dc1281598ec-00-1jqawbue3b2pn.janeway.replit.dev/", {
             method: "POST",
             headers: {
-                "Access-Control-Allow-Origin": "http://77.91.69.134:8000",
+                "Access-Control-Allow-Origin": "https://82201864-cc4c-45d8-80dc-7dc1281598ec-00-1jqawbue3b2pn.janeway.replit.dev/",
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({datetime})
