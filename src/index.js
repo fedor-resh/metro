@@ -73,7 +73,7 @@ export function draw() {
     function st_mck(o)   { return station(DC.extend({size: 3, labelcolor: 'gray', bg: '#aaa'}, o)); };
     function st_mcd(o)   { return station(DC.extend({size: 8, labelcolor: 'gray', bg: '#aaa'}, o)); };
     function inch(o)     { return route(DC.extend({fg: '#ccc', cap: 'round', width: 11}, o||{})); };
-    function inch_d(o)   { return inch(DC.extend({fg: '#fff', width: 7}, o||{})); };
+    function inch_d(o)   { return inch(DC.extend({fg: '#eee', width: 7}, o||{})); };
     function inch_ext(o) { return inch(DC.extend({fg: '#eee', dash:[3,3], width: 2}, o||{})); };
     function inch_mck(o) { return inch(DC.extend({fg: '#ccc', width: 1}, o||{})); };
     function inch_mcd(o) { return inch(DC.extend({fg: '#ccc', width: 1}, o||{})); };
