@@ -54,10 +54,10 @@ export const request = async (e) => {
         const datetime = `${date} ${time}`;
         console.log(JSON.stringify({datetime}));
         loader.startLoader()
-        const response = await fetch("https://82201864-cc4c-45d8-80dc-7dc1281598ec-00-1jqawbue3b2pn.janeway.replit.dev/", {
+        const response = await fetch("https://8e8a-77-91-69-134.ngrok-free.app", {
             method: "POST",
             headers: {
-                "Access-Control-Allow-Origin": "https://82201864-cc4c-45d8-80dc-7dc1281598ec-00-1jqawbue3b2pn.janeway.replit.dev/",
+                "Access-Control-Allow-Origin": "https://8e8a-77-91-69-134.ngrok-free.app",
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({datetime})
