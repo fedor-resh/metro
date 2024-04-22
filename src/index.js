@@ -370,7 +370,6 @@ export function draw() {
             onclick: function(){
                 var station = document.getElementById(text.getAttribute('id').slice(1));
                 text.setAttribute('font-size', DC.root.getAttribute('width')/125);
-                station.onclick({target: station});
             },
             onmousemove: function(){
                 var ts = [], tsattr =[];

@@ -64,6 +64,7 @@ export const request = async (e) => {
         })
         loader.endLoader()
         if (response.ok) {
+            document.querySelectorAll('tr td div > svg > g > *').forEach(el => el.remove())
             loading.stations = await response.json();
             loading.stations = loading.stations.stations
             draw();
