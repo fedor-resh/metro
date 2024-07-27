@@ -54,7 +54,7 @@ export const request = async (e) => {
         const datetime = `${date} ${time}`;
         console.log(JSON.stringify({datetime}));
         loader.startLoader()
-        const response = await fetch("https://8e8a-77-91-69-134.ngrok-free.app", {
+        const response = await fetch("https://fedorresh.ru", {
             method: "POST",
             headers: {
                 "Access-Control-Allow-Origin": "https://8e8a-77-91-69-134.ngrok-free.app",
