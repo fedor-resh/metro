@@ -57,7 +57,6 @@ export const request = async (e) => {
         const response = await fetch("https://fedorresh.ru", {
             method: "POST",
             headers: {
-                "Access-Control-Allow-Origin": "https://8e8a-77-91-69-134.ngrok-free.app",
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({datetime})
