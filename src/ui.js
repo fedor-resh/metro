@@ -58,7 +58,7 @@ export const request = async (e) => {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': 'https://fedorresh.ru/metro'
+                'Access-Control-Allow-Origin': 'https://fedorresh.ru'
             },
             body: JSON.stringify({datetime})
         })
