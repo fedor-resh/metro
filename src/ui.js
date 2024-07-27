@@ -54,7 +54,7 @@ export const request = async (e) => {
         const datetime = `${date} ${time}`;
         console.log(JSON.stringify({datetime}));
         loader.startLoader()
-        const response = await fetch("https://fedorresh.ru", {
+        const response = await fetch("https://fedorresh.ru/metro", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',
